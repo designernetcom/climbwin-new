@@ -1,0 +1,1 @@
+import{j as o}from"./index-BxBFnww9.js";import"./react-vendor-BZcqWdPG.js";import"./notification-vendor-Cj8kC4VE.js";import"./utils-vendor-Dos3PyFQ.js";import"./ui-vendor-C4r8PJBx.js";const t=()=>o.jsx("div",{className:"container-custom py-8",children:o.jsx("h1",{className:"text-3xl font-bold",children:"Vendor Products"})});export{t as default};

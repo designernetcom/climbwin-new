@@ -1,0 +1,382 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-dark hover:shadow-lg;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white hover:bg-accent-dark hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl;
+  }
+
+  .badge {
+    @apply inline-block px-3 py-1 text-xs font-semibold rounded-full;
+  }
+
+  .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary/10 text-secondary;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-danger {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-br from-primary to-primary-light;
+  }
+
+  .container-custom {
+    @apply container px-4 sm:px-6 lg:px-8;
+  }
+  .container-custom {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  /* Custom scrollbar for filter sections */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0d3c36;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #082921;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect for Slider */
+@keyframes shimmerSlide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer-effect {
+  animation: shimmerSlide 2s infinite;
+}
+
+/* Product card hover effects - handled inline in ProductCard component */
+
+/* Loading spinner */
+.spinner {
+  @apply inline-block w-6 h-6 border-4 border-gray-200 border-t-primary rounded-full animate-spin;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .mobile-menu {
+    @apply fixed inset-0 z-50 bg-white transform transition-transform duration-300;
+  }
+
+  .mobile-menu.closed {
+    @apply -translate-x-full;
+  }
+}
+
+/* Hero Slider Styles */
+.hero-slider .swiper-button-prev,
+.hero-slider .swiper-button-next {
+  @apply text-white;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+
+.hero-slider .swiper-button-prev:after,
+.hero-slider .swiper-button-next:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Hide navigation arrows on small screens */
+@media (max-width: 640px) {
+  .hero-slider .swiper-button-prev,
+  .hero-slider .swiper-button-next {
+    display: none;
+  }
+}
+
+/* Larger navigation on tablets and desktop */
+@media (min-width: 768px) {
+  .hero-slider .swiper-button-prev,
+  .hero-slider .swiper-button-next {
+    width: 50px;
+    height: 50px;
+  }
+
+  .hero-slider .swiper-button-prev:after,
+  .hero-slider .swiper-button-next:after {
+    font-size: 22px;
+  }
+}
+
+/* Pagination dots styling */
+.hero-slider .swiper-pagination-bullet {
+  @apply bg-white opacity-50;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px !important;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+  @apply opacity-100;
+  width: 24px;
+  border-radius: 5px;
+}
+
+/* Mobile pagination - smaller and positioned better */
+@media (max-width: 640px) {
+  .hero-slider .swiper-pagination {
+    bottom: 8px !important;
+  }
+
+  .hero-slider .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    margin: 0 3px !important;
+  }
+
+  .hero-slider .swiper-pagination-bullet-active {
+    width: 20px;
+  }
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .hero-slider .swiper-pagination {
+    bottom: 16px !important;
+  }
+}
+
+/* Offer Banner Slider Styles */
+.offer-banner-slider .swiper-pagination {
+  bottom: 8px !important;
+}
+
+.offer-banner-slider .swiper-pagination-bullet {
+  @apply bg-white opacity-50;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px !important;
+  transition: all 0.3s ease;
+}
+
+.offer-banner-slider .swiper-pagination-bullet-active {
+  @apply opacity-100 bg-white;
+  width: 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive pagination */
+@media (max-width: 640px) {
+  .offer-banner-slider .swiper-pagination {
+    bottom: 6px !important;
+  }
+
+  .offer-banner-slider .swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+    margin: 0 3px !important;
+  }
+
+  .offer-banner-slider .swiper-pagination-bullet-active {
+    width: 18px;
+  }
+}
+
+.category-image-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.category-image-card {
+  display: block;
+  position: relative;
+  height: 240px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f3f4f6;
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.category-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.category-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.category-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 35%,
+    rgba(0, 0, 0, 0.25) 60%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  z-index: 1;
+}
+
+.category-image-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 15px 8px;
+  text-align: center;
+}
+
+.category-image-title {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.category-image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.category-image-card:hover .category-image {
+  transform: scale(1.08);
+}
+
+@media (max-width: 1200px) {
+  .category-image-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .category-image-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .category-image-card {
+    height: 220px;
+  }
+}
