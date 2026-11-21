@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { categoryService } from "../services";
 import { getImageUrl } from "../utils/imageHelper";
-import { FiArrowRight } from "react-icons/fi";
 
 const categoryImages = {
   // Sport Equipment
@@ -18,8 +17,8 @@ const categoryImages = {
   sportswear: "/sport-wear.jpeg",
   "sports-wear": "/sport-wear.jpeg",
 
-  // Sports Shoes - add this image to public folder
-  "sports-shoes": "/sports-shoes.jpg",
+  // Sports Shoes
+  "sports-shoes": "/sports-shoes.png",
 
   // Open Gym
   "open-gym-equipment": "/open-gym.jpeg",
@@ -30,7 +29,7 @@ const categoryImages = {
   "sports-flooring": "/sport-flooring.jpeg",
 
   // Playground
-  "playground-equipment": "/playground-equipment.jpg",
+  "playground-equipment": "/playground-equipment.jpeg",
 
   // Adventure Equipment
   "adventure-equipment": "/adventure-equipment.jpeg",
@@ -41,6 +40,18 @@ const categoryImages = {
   "military-obstacle": "/military-equipment.jpeg",
   "military-equipment": "/military-equipment.jpeg",
 };
+
+// Real site categories used when the API is temporarily unavailable or rate-limited.
+const originalCategories = [
+  { id: "sport-equipment", name: "Sport Equipment", slug: "sport-equipment" },
+  { id: "fitness-equipment", name: "Fitness Equipment", slug: "fitness-equipment" },
+  { id: "sportswear", name: "Sportswear", slug: "sportswear" },
+  { id: "sports-shoes", name: "Sports Shoes", slug: "sports-shoes" },
+  { id: "open-gym-equipment", name: "Open Gym Equipment", slug: "open-gym-equipment" },
+  { id: "sports-floorings", name: "Sports Floorings", slug: "sports-floorings" },
+  { id: "playground-equipment", name: "Playground Equipment", slug: "playground-equipment" },
+  { id: "adventure-equipment", name: "Adventure Equipment", slug: "adventure-equipment" },
+];
 
 const getCategoryImage = (category) => {
   const normalize = (value) =>
@@ -69,50 +80,15 @@ const getCategoryImage = (category) => {
   return null;
 };
 
+const getCategoryLabel = (category) => {
+  return String(category.name || category.slug || "Category")
+    .replace(/[-_]+/g, " ")
+    .toUpperCase();
+};
+
 const ShopByCategory = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Default categories with simple icons
-  const defaultCategories = [
-    {
-      id: 1,
-      name: "Furniture",
-      slug: "furniture",
-      icon: "",
-      color: "bg-blue-50",
-      hoverColor: "group-hover:bg-blue-100",
-      textColor: "text-blue-600",
-    },
-    {
-      id: 2,
-      name: "Electronics",
-      slug: "electronics",
-      icon: "",
-      color: "bg-purple-50",
-      hoverColor: "group-hover:bg-purple-100",
-      textColor: "text-purple-600",
-    },
-    {
-      id: 3,
-      name: "Appliances",
-      slug: "appliances",
-      icon: "",
-      color: "bg-blue-50",
-      hoverColor: "group-hover:bg-blue-100",
-      textColor: "text-green-600",
-    },
-
-    {
-      id: 5,
-      name: "Fashion",
-      slug: "fashion",
-      icon: "",
-      color: "bg-pink-50",
-      hoverColor: "group-hover:bg-pink-100",
-      textColor: "text-pink-600",
-    },
-  ];
 
   useEffect(() => {
     fetchCategories();
@@ -121,23 +97,17 @@ const ShopByCategory = () => {
   const fetchCategories = async () => {
     try {
       const response = await categoryService.getCategories();
-      if (response.success && response.data.length > 0) {
-        const mergedCategories = response.data
-          .slice(0, 8)
-          .map((cat, index) => ({
-            ...cat,
-            ...defaultCategories[index % defaultCategories.length],
-            name: cat.name,
-            slug: cat.slug,
-            id: cat.id,
-          }));
-        setCategories(mergedCategories);
-      } else {
-        setCategories(defaultCategories);
-      }
+      const responseCategories = Array.isArray(response?.data)
+        ? response.data
+        : Array.isArray(response?.data?.data)
+          ? response.data.data
+          : [];
+      const apiCategories = responseCategories.slice(0, 8);
+
+      setCategories(apiCategories.length > 0 ? apiCategories : originalCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
-      setCategories(defaultCategories);
+      setCategories(originalCategories);
     } finally {
       setLoading(false);
     }
@@ -148,14 +118,13 @@ const ShopByCategory = () => {
       <section className="py-16 bg-white">
         <div className="container-custom">
           <div className="text-center mb-12">
-            <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse mx-auto mb-3"></div>
-            <div className="h-4 w-64 bg-gray-100 rounded animate-pulse mx-auto"></div>
+            <div className="h-10 w-44 bg-gray-200 rounded-lg animate-pulse mx-auto"></div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
             {[...Array(8)].map((_, index) => (
               <div
                 key={index}
-                className="aspect-square bg-gray-100 rounded-xl animate-pulse"
+                className="aspect-square bg-gray-200 rounded-xl animate-pulse"
               ></div>
             ))}
           </div>
@@ -169,29 +138,53 @@ const ShopByCategory = () => {
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h4 className="text-xl md:text-xl font-bold text-gray-900 mb-3">
+          <h4 className="text-3xl md:text-4xl font-bold text-[#071b3a]">
             Category
           </h4>
-          <p className="text-gray-600 text-lg">
-            Explore our wide range of products
-          </p>
         </div>
 
         {/* Category Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
           {categories.map((category) => (
             <Link
               key={category.id}
               to={`/products?category=${category.slug}`}
-              className="group"
+              className="group block"
             >
-              <div
-                className={`${category.color} ${category.hoverColor} rounded-xl p-6 transition-all duration-300 hover:shadow-lg border border-gray-100`}
-              >
-                {/* Icon/Image */}
-                <div className="mb-3 transform group-hover:scale-110 transition-transform duration-300">
-                  {category.icon_image || category.image ? (
-                    <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden bg-white shadow-sm">
-                      <img
-                        src={getImageUrl(category.icon_image || category.image)}
-                    
+              <div className="relative aspect-square overflow-hidden rounded-xl bg-gray-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
+                {getCategoryImage(category) ? (
+                  <img
+                    src={getCategoryImage(category)}
+                    alt={category.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-500">
+                    <span className="text-5xl font-bold text-white/70">
+                      {category.name?.charAt(0)}
+                    </span>
+                  </div>
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
+
+                <div className="absolute inset-x-0 bottom-0 text-center">
+                  <h3 className="px-2 pb-2 text-base font-bold leading-tight text-white drop-shadow-md md:text-lg">
+                    {category.name}
+                  </h3>
+                  <div className="bg-[#720707] px-2 py-1.5">
+                    <span className="block truncate text-[11px] font-bold tracking-wide text-red-200 md:text-xs">
+                      {getCategoryLabel(category)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ShopByCategory;
